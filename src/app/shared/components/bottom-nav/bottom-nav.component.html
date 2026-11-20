@@ -1,0 +1,21 @@
+<!-- La selección refleja la página actual, incluso al volver atrás. -->
+<nav class="barra" aria-label="Navegación principal" [style.--indice]="indiceActivo"
+    [style.--cantidad]="opciones.length">
+    <div class="barra-interior">
+        @if (indiceActivo >= 0) {
+        <div class="indicador" aria-hidden="true">
+            <div class="circulo"></div>
+        </div>
+        }
+
+        @for (opcion of opciones; track opcion.ruta; let i = $index) {
+        <button type="button" [routerLink]="opcion.habilitada ? opcion.ruta : null" [disabled]="!opcion.habilitada"
+            [class.activo]="indiceActivo === i" [attr.aria-current]="indiceActivo === i ? 'page' : null">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path [attr.d]="opcion.icono" />
+            </svg>
+            <span>{{ opcion.nombre }}</span>
+        </button>
+        }
+    </div>
+</nav>

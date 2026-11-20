@@ -1,0 +1,54 @@
+<div class="fila">
+    <div class="avatar" aria-hidden="true">
+        @if (fotoUrl(); as foto) {
+        @if (foto !== fotoFallida()) {
+        <img [src]="foto" alt="" (error)="fotoFallida.set(foto)" />
+        } @else {
+        {{ iniciales() }}
+        }
+        } @else {
+        {{ iniciales() }}
+        }
+    </div>
+
+    <div class="datos">
+        <strong>{{ nombre() }}</strong>
+        <span>{{ telefono() || 'Sin teléfono disponible' }}</span>
+
+        @if (!pendiente()) {
+        <small>{{ activa() ? 'Vinculación activa' : 'Vinculación inactiva' }}</small>
+        }
+    </div>
+
+    @if (pendiente()) {
+    <div class="acciones">
+        <button class="aceptar" type="button" [disabled]="bloqueada()"
+            [attr.aria-label]="'Aceptar solicitud de ' + nombre()" title="Aceptar solicitud" (click)="aceptar.emit()">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m5 12 4 4L19 6" />
+            </svg>
+        </button>
+
+        <button class="rechazar" type="button" [disabled]="bloqueada()"
+            [attr.aria-label]="'Rechazar solicitud de ' + nombre()" title="Rechazar solicitud"
+            (click)="rechazar.emit()">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 6 12 12M18 6 6 18" />
+            </svg>
+        </button>
+    </div>
+    } @else if (gestionable()) {
+    <!-- Integrante ya vinculado: retirarlo o volver a agregarlo. -->
+    @if (activa()) {
+    <button class="gestion retirar" type="button" [disabled]="bloqueada()"
+        [attr.aria-label]="'Retirar a ' + nombre() + ' de tu red'" (click)="retirar.emit()">
+        Retirar
+    </button>
+    } @else {
+    <button class="gestion reactivar" type="button" [disabled]="bloqueada()"
+        [attr.aria-label]="'Volver a agregar a ' + nombre() + ' a tu red'" (click)="reactivar.emit()">
+        Reactivar
+    </button>
+    }
+    }
+</div>

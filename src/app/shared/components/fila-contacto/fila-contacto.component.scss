@@ -1,0 +1,132 @@
+:host {
+    display: block;
+}
+
+.fila {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    text-align: left;
+}
+
+.avatar {
+    flex: 0 0 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background: #fff0f2;
+    color: #ac1930;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.datos {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    gap: 3px;
+    overflow-wrap: anywhere;
+}
+
+.datos strong {
+    color: #202633;
+    font-size: 16px;
+    line-height: 1.25;
+}
+
+.datos span,
+.datos small {
+    color: #596474;
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.acciones {
+    display: flex;
+    flex-shrink: 0;
+    gap: 2px;
+}
+
+.acciones button {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.aceptar {
+    color: #176442;
+    background: #eaf6ef;
+}
+
+.rechazar {
+    color: #ac1930;
+    background: #fff0f2;
+}
+
+.acciones svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.acciones button:focus-visible {
+    outline: 2px solid #202633;
+    outline-offset: 2px;
+}
+
+.acciones button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* Botón de texto para retirar o reactivar a un integrante de la red. */
+.gestion {
+    flex-shrink: 0;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 999px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.gestion.retirar {
+    border: 1.5px solid #ac1930;
+    background: #fff;
+    color: #ac1930;
+}
+
+.gestion.reactivar {
+    border: 0;
+    background: #eaf6ef;
+    color: #176442;
+}
+
+.gestion:focus-visible {
+    outline: 2px solid #202633;
+    outline-offset: 2px;
+}
+
+.gestion:disabled {
+    opacity: 0.5;
+    cursor: default;
+}

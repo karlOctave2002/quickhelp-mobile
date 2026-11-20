@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget de emergencia: un solo botón que activa y cancela la SOS. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_raiz"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp">
+
+    <!-- Reposo: botón rojo pequeño. -->
+    <TextView
+        android:id="@+id/widget_boton_sos"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="start|center_vertical"
+        android:background="@drawable/widget_boton_sos"
+        android:contentDescription="@string/widget_emergencia_activar"
+        android:gravity="center"
+        android:text="@string/widget_emergencia_sos"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <!-- Franja: cuenta regresiva, cancelada o enviando. -->
+    <LinearLayout
+        android:id="@+id/widget_franja"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/widget_franja"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="6dp"
+        android:paddingEnd="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/widget_numero"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/widget_circulo_numero"
+            android:gravity="center"
+            android:textColor="#C91D39"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widget_titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/widget_subtitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

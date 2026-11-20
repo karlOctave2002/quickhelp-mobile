@@ -1,0 +1,61 @@
+@if (sesion(); as cuenta) {
+<!-- La inicial, el saludo y el texto forman un solo botón táctil. -->
+<button class="acceso" type="button" (click)="abrir(ventana)" aria-haspopup="dialog"
+    [attr.aria-label]="'Abrir mi perfil: ' + cuenta.nombreApellido">
+    <span class="avatar" aria-hidden="true">{{ inicial() }}</span>
+    <span class="texto-acceso">
+        <span class="saludo">¡Hola, {{ primerNombre() }}!</span>
+        <span class="enlace">Mi perfil</span>
+    </span>
+</button>
+
+<dialog #ventana class="ventana" aria-labelledby="titulo-mi-perfil" (close)="limpiar()">
+    <div class="contenido">
+        <p class="etiqueta">QUICK HELP</p>
+        <h2 id="titulo-mi-perfil">Mi perfil</h2>
+
+        <div class="identidad">
+            <span class="avatar avatar-grande" aria-hidden="true">{{ inicial() }}</span>
+            <div>
+                <strong>{{ perfil()?.nombreApellido || cuenta.nombreApellido }}</strong>
+                <span>{{ cuenta.rol === 'ADULTO_MAYOR' ? 'Persona adulta' : 'Persona de apoyo' }}</span>
+            </div>
+        </div>
+
+        @if (cargando()) {
+        <p class="estado" role="status">Cargando tus datos de contacto…</p>
+        } @else if (error()) {
+        <p class="estado" role="alert">{{ error() }}</p>
+        <button class="reintentar" type="button" (click)="cargarPerfil()">
+            Volver a intentar
+        </button>
+        } @else if (perfil(); as datos) {
+        <dl class="datos">
+            <div>
+                <dt>Teléfono de contacto</dt>
+                <dd>{{ datos.telefono || 'No registrado' }}</dd>
+            </div>
+            <div>
+                <dt>Correo electrónico</dt>
+                <dd>{{ datos.correo || 'No registrado' }}</dd>
+            </div>
+        </dl>
+        }
+
+        <div class="acciones">
+            <button class="cerrar" type="button" autofocus (click)="ventana.close()">
+                Cerrar
+            </button>
+            <button class="salir" type="button" (click)="cerrarSesion(ventana)">
+                Cerrar sesión
+            </button>
+        </div>
+    </div>
+</dialog>
+} @else {
+<!-- La demostración no usa el nombre ni la inicial de una cuenta real. -->
+<div class="acceso">
+    <span class="avatar" aria-hidden="true">—</span>
+    <span class="saludo">Sin sesión iniciada</span>
+</div>
+}

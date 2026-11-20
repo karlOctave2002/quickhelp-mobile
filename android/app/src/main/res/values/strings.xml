@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Quick Help</string>
+    <string name="title_activity_main">Quick Help</string>
+    <string name="package_name">cl.quickhelp.mobile</string>
+    <string name="custom_url_scheme">cl.quickhelp.mobile</string>
+    <!-- Widget de emergencia -->
+    <string name="widget_emergencia_sos">SOS</string>
+    <string name="widget_emergencia_activar">Activar emergencia de Quick Help</string>
+    <string name="widget_emergencia_descripcion">Botón de emergencia: tócalo para avisar a tu red de apoyo.</string>
+</resources>

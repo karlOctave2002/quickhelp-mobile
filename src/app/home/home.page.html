@@ -1,20 +1,87 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <main class="pantalla">
+    <header class="encabezado">
+      <app-perfil-inicio />
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <div class="ubicacion">
+        <p aria-live="polite">{{ direccion() }}</p>
+        <span class="enlace">Mi ubicación</span>
+      </div>
+    </header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+    <section class="emergencia" aria-labelledby="titulo-ayuda">
+      <h1 id="titulo-ayuda">¿Necesitas ayuda<br>de emergencia?</h1>
+
+      <p class="instruccion" id="instruccion-emergencia">
+        @if (enviando()) {
+        Estamos procesando<br>tu solicitud
+        } @else if (presionando()) {
+        Sigue presionando<br>para solicitar ayuda
+        } @else {
+        Mantén presionado 2 segundos<br>para solicitar ayuda
+        }
+      </p>
+
+      <div class="aro">
+        <button class="boton-sos" type="button"
+          style="touch-action: none; user-select: none; -webkit-touch-callout: none;"
+          [disabled]="enviando() || sesion()?.rol !== 'ADULTO_MAYOR'" [attr.aria-busy]="enviando()"
+          aria-label="Solicitar ayuda de emergencia" aria-describedby="instruccion-emergencia"
+          (pointerdown)="iniciarPulsacion($event)" (pointerup)="cancelarPulsacion()"
+          (pointerleave)="cancelarPulsacion()" (pointercancel)="cancelarPulsacion()" (keydown)="iniciarTeclado($event)"
+          (keyup)="terminarTeclado($event)" (blur)="cancelarPulsacion()"
+          (contextmenu)="$event.preventDefault(); cancelarPulsacion()" (click)="activarAccesible($event)">
+
+          <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
+            <circle cx="50" cy="50" r="6" fill="currentColor" />
+            <path d="M35 32a25 25 0 0 0 0 36M65 32a25 25 0 0 1 0 36" stroke="currentColor" stroke-width="7"
+              stroke-linecap="round" />
+            <path d="M23 20a42 42 0 0 0 0 60M77 20a42 42 0 0 1 0 60" stroke="currentColor" stroke-width="7"
+              stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+
+      <div aria-live="polite" aria-atomic="true">
+        @if (mensaje()) {
+        <p class="aviso">{{ mensaje() }}</p>
+        }
+      </div>
+
+      @if (error()) {
+      <p class="aviso" style="color: #a71930;" role="alert">
+        {{ error() }}
+      </p>
+      }
+    </section>
+
+    <section class="opciones" aria-labelledby="titulo-opciones">
+      <h2 id="titulo-opciones">¿Cómo podemos ayudarte?</h2>
+      <p>Selecciona una opción</p>
+
+      <!-- Cada tarjeta envía su mensaje al chat de la emergencia abierta. -->
+      <div class="tarjetas">
+        <button class="tarjeta" type="button"
+          [disabled]="enviando() || enviandoOpcion() || sesion()?.rol !== 'ADULTO_MAYOR'"
+          (click)="enviarOpcion('MAL')">
+          <strong>Me siento<br>mal</strong>
+          <span aria-hidden="true">→</span>
+        </button>
+
+        <button class="tarjeta" type="button"
+          [disabled]="enviando() || enviandoOpcion() || sesion()?.rol !== 'ADULTO_MAYOR'"
+          (click)="enviarOpcion('ASISTENCIA')">
+          <strong>Necesito<br>asistencia</strong>
+          <span aria-hidden="true">→</span>
+        </button>
+
+        <button class="tarjeta" type="button"
+          [disabled]="enviando() || enviandoOpcion() || sesion()?.rol !== 'ADULTO_MAYOR'"
+          (click)="enviarOpcion('BIEN')">
+          <strong>Estoy<br>bien</strong>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </section>
+  </main>
 </ion-content>

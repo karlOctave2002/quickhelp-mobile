@@ -33,7 +33,10 @@
                 "output": "assets"
               }
             ],
-            "styles": ["src/global.scss", "src/theme/variables.scss"],
+            "styles": [
+              "src/global.scss",
+              "src/theme/variables.scss"
+            ],
             "scripts": [],
             "browser": "src/main.ts"
           },
@@ -47,8 +50,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "6kb",
+                  "maximumError": "8kb"
                 }
               ],
               "fileReplacements": [
@@ -73,6 +76,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.cjs"
+          },
           "configurations": {
             "production": {
               "buildTarget": "app:build:production"
@@ -80,9 +86,7 @@
             "development": {
               "buildTarget": "app:build:development"
             },
-            "ci": {
-              "progress": false
-            }
+            "ci": {}
           },
           "defaultConfiguration": "development"
         },
@@ -95,9 +99,11 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "tsconfig.spec.json",
+            "tsConfig": "src/tsconfig.spec.json",
             "buildTarget": "::development",
-            "setupFiles": ["src/test-setup.ts"]
+            "setupFiles": [
+              "src/test-setup.ts"
+            ]
           },
           "configurations": {
             "ci": {
@@ -108,14 +114,20 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
     }
   },
   "cli": {
-    "schematicCollections": ["@ionic/angular-toolkit"]
+    "schematicCollections": [
+      "@ionic/angular-toolkit"
+    ],
+    "analytics": "6b09f594-74e7-4b5f-868c-52f6a3e1927f"
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {

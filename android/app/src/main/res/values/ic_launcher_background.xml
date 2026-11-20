@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Rojo de marca: evita que el celular pinte de negro el borde del ícono. -->
+    <color name="ic_launcher_background">#E3203A</color>
+</resources>

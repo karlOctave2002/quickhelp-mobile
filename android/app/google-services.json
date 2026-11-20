@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "553611153997",
+    "project_id": "quick-help-app",
+    "storage_bucket": "quick-help-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553611153997:android:7c9a0a51ea5614617ec204",
+        "android_client_info": {
+          "package_name": "cl.quickhelp.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7JEIh-odsc5hRu_El2F2LJeFhIbEH08U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

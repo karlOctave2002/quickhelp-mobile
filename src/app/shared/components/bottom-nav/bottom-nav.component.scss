@@ -1,0 +1,155 @@
+/* Mantiene el footer fuera del área desplazable de las páginas. */
+:host {
+    display: block;
+    flex-shrink: 0;
+    background: #f0f2f7;
+    font-family: Arial, sans-serif;
+}
+
+button {
+    font: inherit;
+}
+
+// Unifica la tipografía de los controles.
+button:disabled {
+    cursor: default;
+}
+
+// Destinos todavía pendientes.
+
+/* Barra inferior con espacio para elevar el círculo seleccionado. */
+.barra {
+    --duracion: 480ms;
+    --curva: cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    margin-top: 28px;
+    padding-bottom: var(--ion-safe-area-bottom, 0px);
+    background: #fff;
+    border-radius: 22px 22px 0 0;
+    box-shadow: 0 -5px 22px #25304708;
+}
+
+.barra-interior {
+    position: relative;
+    display: grid;
+    // El adulto tiene cuatro opciones y el asistente tres.
+    grid-template-columns: repeat(var(--cantidad, 4), minmax(0, 1fr));
+    max-width: 480px;
+    height: 76px;
+    margin: 0 auto;
+}
+
+/* Un único indicador se desplaza entre las posiciones del footer. */
+.indicador {
+    position: absolute;
+    top: -27px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    width: calc(100% / var(--cantidad, 4));
+    pointer-events: none;
+    transform: translateX(calc(var(--indice, 0) * 100%));
+    transition: transform var(--duracion) var(--curva);
+}
+
+.circulo {
+    position: relative;
+    box-sizing: border-box;
+    width: 64px;
+    height: 64px;
+    border: 7px solid #f0f2f7;
+    border-radius: 50%;
+    background: #fff;
+}
+
+/* Curvas laterales que integran el círculo con la barra blanca. */
+.circulo::before,
+.circulo::after {
+    position: absolute;
+    top: 20px;
+    width: 18px;
+    height: 18px;
+    background: transparent;
+    content: '';
+}
+
+.circulo::before {
+    left: -23px;
+    border-top-right-radius: 18px;
+    box-shadow: 0 -9px 0 0 #f0f2f7;
+}
+
+.circulo::after {
+    right: -23px;
+    border-top-left-radius: 18px;
+    box-shadow: 0 -9px 0 0 #f0f2f7;
+}
+
+/* Los iconos ascienden y las etiquetas permanecen legibles. */
+.barra button {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    min-width: 0;
+    padding: 16px 2px 8px;
+    border: 0;
+    background: transparent;
+    color: #707989;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.barra svg {
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition:
+        transform var(--duracion) var(--curva),
+        color 220ms ease;
+}
+
+.barra span {
+    font-size: 11px;
+    line-height: 1.2;
+    text-align: center;
+    transition: color 220ms ease;
+}
+
+.barra .activo {
+    color: #c82135;
+}
+
+.barra .activo svg {
+    transform: translateY(-30px) scale(1.08);
+}
+
+.barra .activo span {
+    font-weight: 700;
+}
+
+.barra button:focus-visible {
+    outline: 2px solid #c82135;
+    outline-offset: -4px;
+    border-radius: 12px;
+}
+
+/* Respeta la preferencia del dispositivo de reducir animaciones. */
+@media (prefers-reduced-motion: reduce) {
+
+    .indicador,
+    .barra svg,
+    .barra span {
+        transition: none;
+    }
+}

@@ -1,0 +1,183 @@
+<ion-content>
+    <main class="pantalla">
+        <div class="perfil-superior">
+            <app-perfil-inicio></app-perfil-inicio>
+        </div>
+        <header class="encabezado">
+            <p class="marca">QUICK HELP</p>
+            <h1>Solicitudes de ayuda</h1>
+        </header>
+
+        @if (sesion(); as cuenta) {
+        @if (cuenta.rol === 'ASISTENTE') {
+        <!-- Sin notificaciones el asistente no se entera de las emergencias. -->
+        @if (avisosDesactivados()) {
+        <div class="aviso-notificaciones" role="alert">
+            <div class="aviso-contenido">
+                <span class="icono-aviso" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                        <path d="M10.3 21a1.9 1.9 0 0 0 3.4 0" />
+                        <path d="M3 3l18 18" />
+                    </svg>
+                </span>
+                <span class="texto-aviso">
+                    <strong>Las notificaciones están desactivadas</strong>
+                    <span>Actívalas para no perderte una emergencia de tu red.</span>
+                </span>
+            </div>
+            <button type="button" class="boton-aviso" (click)="activarAvisos()">
+                Activar notificaciones
+            </button>
+        </div>
+        }
+
+        <!-- Estado de la red: tranquila o con emergencias abiertas. -->
+        @if (alertasAbiertas().length > 0) {
+        <div class="estado-red alerta" role="status">
+            <span class="icono-estado" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 3 2 20h20z" />
+                    <path d="M12 10v4" />
+                    <path d="M12 17h.01" />
+                </svg>
+            </span>
+            <span class="texto-estado">
+                <strong>
+                    {{ alertasAbiertas().length === 1 ? '1 emergencia activa'
+                    : alertasAbiertas().length + ' emergencias activas' }}
+                </strong>
+                <span>Responde para que tu red sepa quién va en camino.</span>
+            </span>
+        </div>
+        } @else if (actualizado() && !error()) {
+        <div class="estado-red tranquila" role="status">
+            <span class="icono-estado" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 3 5 6v5c0 4.4 3 8.3 7 10 4-1.7 7-5.6 7-10V6z" />
+                    <path d="m9 12 2 2 4-4" />
+                </svg>
+            </span>
+            <span class="texto-estado">
+                <strong>Tu red está tranquila</strong>
+                <span>No hay emergencias abiertas. Revisamos cada 15 segundos.</span>
+                <small>Actualizado a las {{ actualizado() | date:'HH:mm' }}</small>
+            </span>
+        </div>
+        }
+
+        <section aria-labelledby="titulo-alertas">
+            @if (alertasAbiertas().length > 0) {
+            <div class="barra-lista">
+                <h2 id="titulo-alertas">Alertas abiertas</h2>
+
+                <button class="accion" type="button" (click)="cargar()" [disabled]="cargando()">
+                    {{ cargando() ? 'Actualizando…' : 'Actualizar' }}
+                </button>
+            </div>
+            } @else {
+            <h2 id="titulo-alertas" class="solo-lector">Alertas abiertas</h2>
+            }
+
+            @if (cargando() && !actualizado()) {
+            <p class="aviso" role="status">Consultando tu red…</p>
+            }
+
+            @if (error()) {
+            <div class="aviso" role="alert">
+                <p>{{ error() }}</p>
+                <button class="accion" type="button" (click)="cargar()" [disabled]="cargando()">
+                    {{ cargando() ? 'Actualizando…' : 'Actualizar' }}
+                </button>
+            </div>
+            }
+
+            <!-- Cada emergencia tiene su tarjeta y su propio borrador. -->
+            @if (alertasAbiertas().length > 0) {
+            <div class="tarjetas-alertas">
+                @for (alerta of alertasAbiertas(); track alerta.idAlerta) {
+                <app-tarjeta-alerta-apoyo [alerta]="alerta" [cuenta]="cuenta" />
+                }
+            </div>
+            }
+        </section>
+
+        <!-- Resumen del mes con los datos que ya entrega la red. -->
+        <section class="resumen" aria-label="Resumen del mes">
+            <div class="dato-resumen">
+                <strong>{{ resumen().personas }}</strong>
+                <span>{{ resumen().personas === 1 ? 'Persona que apoyas' : 'Personas que apoyas' }}</span>
+            </div>
+            <div class="dato-resumen">
+                <strong>{{ resumen().solicitudes }}</strong>
+                <span>Solicitudes este mes</span>
+            </div>
+            <div class="dato-resumen">
+                <strong>{{ resumen().resueltas }}</strong>
+                <span>Resueltas este mes</span>
+            </div>
+        </section>
+
+        <section class="bloque" aria-labelledby="titulo-personas">
+            <h2 id="titulo-personas">Personas que apoyas</h2>
+
+            @if (personas().length > 0) {
+            <ul class="lista-simple">
+                @for (persona of personas(); track persona.idAdultoMayor) {
+                <li class="persona-apoyada">
+                    <span class="inicial" aria-hidden="true">{{ persona.inicial }}</span>
+                    <span class="datos">
+                        <strong>{{ persona.nombreAdultoMayor }}</strong>
+                        <span>
+                            @if (persona.ultima) {
+                            Última solicitud: {{ persona.ultima | date:'dd/MM · HH:mm' }}
+                            } @else {
+                            Sin solicitudes
+                            }
+                        </span>
+                    </span>
+                </li>
+                }
+            </ul>
+            } @else {
+            <p class="aviso">Cuando una persona apruebe tu vinculación, aparecerá aquí.</p>
+            }
+        </section>
+
+        @if (actividad().length > 0) {
+        <section class="bloque" aria-labelledby="titulo-actividad">
+            <div class="barra-lista">
+                <h2 id="titulo-actividad">Actividad reciente</h2>
+                <a class="accion" routerLink="/apoyo/solicitudes">Ver todas</a>
+            </div>
+
+            <ul class="lista-simple">
+                @for (alerta of actividad(); track alerta.idAlerta) {
+                <li class="actividad">
+                    <span class="datos">
+                        <strong>Solicitud #{{ alerta.idAlerta }}</strong>
+                        <span>{{ alerta.nombreAdultoMayor }} · {{ alerta.fechaCreacion | date:'dd/MM · HH:mm' }}</span>
+                    </span>
+                    <span class="cerrada">
+                        <span class="punto" aria-hidden="true"></span>
+                        {{ alerta.estado === 'RESUELTA' ? 'Resuelta'
+                        : alerta.estado === 'CANCELADA' ? 'Cancelada' : 'Cerrada' }}
+                    </span>
+                </li>
+                }
+            </ul>
+        </section>
+        }
+        } @else {
+        <p class="aviso">
+            Esta pantalla corresponde a la persona de apoyo.
+        </p>
+        }
+        } @else {
+        <section class="aviso">
+            <h2>Inicia sesión para ver tu red</h2>
+            <a class="accion" routerLink="/login">Iniciar sesión</a>
+        </section>
+        }
+    </main>
+</ion-content>

@@ -1,0 +1,84 @@
+/* Detalles propios de la recuperación; el resto viene del login. */
+.bienvenida strong {
+    color: #202633;
+    word-break: break-all;
+}
+
+/* Código grande y espaciado para leerlo fácil. */
+.codigo {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 10px;
+    text-align: center;
+}
+
+.reenviar {
+    min-height: 44px;
+    padding: 8px 4px;
+    border: 0;
+    background: transparent;
+    color: #b9142c;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    cursor: pointer;
+}
+
+.reenviar:focus-visible {
+    outline: 2px solid #c82135;
+    outline-offset: 3px;
+}
+
+.espera {
+    display: inline-block;
+    padding: 8px 4px;
+    color: #4a5566;
+    font-weight: 700;
+}
+
+.aviso-ok {
+    margin: 14px 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #e3f4eb;
+    color: #176443;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* Paso final. */
+.listo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0 26px;
+    text-align: center;
+}
+
+.listo p {
+    margin: 0;
+    color: #697180;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.icono-listo {
+    display: grid;
+    width: 76px;
+    height: 76px;
+    place-items: center;
+    border-radius: 50%;
+    background: #e3f4eb;
+    color: #176443;
+}
+
+.icono-listo svg {
+    width: 38px;
+    height: 38px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}

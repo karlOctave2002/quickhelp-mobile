@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="utf-8" />
-  <title>Ionic App</title>
+  <title>Quick Help</title>
 
   <base href="/" />
 
@@ -20,7 +20,22 @@
 </head>
 
 <body>
-  <app-root></app-root>
+  <app-root>
+    <!-- Pantalla de carga: se ve hasta que Angular muestra el login (Angular la reemplaza). -->
+    <div style="position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center;
+                justify-content: center; background: linear-gradient(145deg, #f52b43, #cf102c);
+                color: #fff; font-family: Arial, sans-serif; text-align: center;">
+      <div style="display: grid; place-items: center; width: 72px; height: 72px; margin-bottom: 16px;
+                  border: 1px solid rgb(255 255 255 / 35%); border-radius: 24px; background: rgb(255 255 255 / 12%);">
+        <svg viewBox="0 0 48 48" width="50" height="50" aria-hidden="true">
+          <path d="M5 25H14L20 12L28 36L34 25H43" fill="none" stroke="#fff" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <div style="font-size: 52px; line-height: 1.1; letter-spacing: -2px;">Quick<b>Help</b></div>
+      <p style="margin: 12px 0 0; font-size: 15px;">Tu red de apoyo, contigo.</p>
+    </div>
+  </app-root>
 </body>
 
 </html>

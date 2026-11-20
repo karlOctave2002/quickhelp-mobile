@@ -1,0 +1,117 @@
+<ion-content>
+    <main class="pantalla">
+        <header class="encabezado">
+            <p class="etiqueta">QUICK HELP</p>
+            <h1>{{ esAsistente() ? 'Solicitudes recibidas' : 'Mis solicitudes' }}</h1>
+            <p class="descripcion">
+                {{ esAsistente()
+                ? 'Consulta las solicitudes de ayuda de tu red y su estado.'
+                : 'Consulta el estado de tus solicitudes de ayuda.' }}
+            </p>
+        </header>
+
+        @if (cargando()) {
+        <p class="aviso" role="status">Cargando tus solicitudes…</p>
+        } @else if (error()) {
+        <section class="estado-vacio" aria-labelledby="titulo-error">
+            <h2 id="titulo-error">No pudimos mostrar tus solicitudes</h2>
+            <p role="alert">{{ error() }}</p>
+            <button class="reintentar" type="button" (click)="reintentar()">
+                Reintentar
+            </button>
+        </section>
+        } @else if (solicitudes().length === 0) {
+        <section class="estado-vacio" aria-labelledby="titulo-vacio">
+            <div class="icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M8 5H5V21H19V5H16" />
+                    <path d="M8 3H16V7H8Z" />
+                    <path d="M8 12H16M8 16H13" />
+                </svg>
+            </div>
+
+            <h2 id="titulo-vacio">
+                {{ esAsistente() ? 'Aún no hay solicitudes recibidas' : 'Aún no hay solicitudes' }}
+            </h2>
+            <p>
+                {{ esAsistente()
+                ? 'Aquí aparecerán las solicitudes de las personas a las que apoyas.'
+                : 'Cuando solicites ayuda, podrás consultar su seguimiento aquí.' }}
+            </p>
+        </section>
+        } @else {
+        <div class="historial">
+            <table class="tabla-historial"
+                [attr.aria-label]="esAsistente() ? 'Historial de solicitudes recibidas' : 'Historial de mis solicitudes'">
+                <thead>
+                    <tr>
+                        <th scope="col">Solicitud</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (solicitud of solicitudes(); track solicitud.idAlerta) {
+                    <tr>
+                        <th scope="row">
+                            @if (tieneChat(solicitud) && sesion(); as cuenta) {
+                            <!-- La solicitud abierta da acceso al chat con la red. -->
+                            <button class="abrir-chat" type="button" (click)="chat.abrir()"
+                                [attr.aria-label]="'Abrir el chat de la solicitud #' + solicitud.idAlerta">
+                                <span class="numero">#{{ solicitud.idAlerta }}</span>
+                                <span class="ver-chat">Ver chat ›</span>
+                            </button>
+                            <app-chat-alerta #chat [alerta]="solicitud" [cuenta]="cuenta" />
+                            } @else {
+                            <span class="numero">#{{ solicitud.idAlerta }}</span>
+                            }
+
+                            @if (esAsistente()) {
+                            <span class="dato-secundario">
+                                {{ solicitud.nombreAdultoMayor }}
+                            </span>
+                            } @else {
+                            <span class="dato-secundario texto-natural">
+                                {{ solicitud.tipoActivacion.replaceAll('_', ' ').toLowerCase() }}
+                            </span>
+                            }
+                        </th>
+
+                        <td>
+                            <time [attr.datetime]="solicitud.fechaCreacion">
+                                <span>{{ solicitud.fechaCreacion | date:'dd/MM/yy' }}</span>
+                                <span class="dato-secundario">
+                                    {{ solicitud.fechaCreacion | date:'HH:mm' }}
+                                </span>
+                            </time>
+                        </td>
+
+                        <td>
+                            <span class="estado"
+                                [class.activa]="solicitud.estado === 'ACTIVA' || solicitud.estado === 'PENDIENTE'">
+                                <span class="punto" aria-hidden="true"></span>
+                                <span class="texto-natural">
+                                    {{ solicitud.estado === 'PENDIENTE' ? 'activa/pendiente'
+                                    : solicitud.estado.replaceAll('_', ' ').toLowerCase() }}
+                                </span>
+                            </span>
+
+                            @if (solicitud.fechaAtencion) {
+                            <small class="dato-secundario">
+                                Atención {{ solicitud.fechaAtencion | date:'dd/MM HH:mm' }}
+                            </small>
+                            }
+                            @if (solicitud.fechaCierre) {
+                            <small class="dato-secundario">
+                                Cierre {{ solicitud.fechaCierre | date:'dd/MM HH:mm' }}
+                            </small>
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        }
+    </main>
+</ion-content>

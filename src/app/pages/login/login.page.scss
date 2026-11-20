@@ -1,0 +1,246 @@
+/* Base móvil: el contenido puede desplazarse al abrir el teclado. */
+:host {
+    display: block;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    color: #202633;
+}
+
+ion-content {
+    --background: #e51c35;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+input,
+button {
+    font: inherit;
+}
+
+/* Cabecera con mayor protagonismo visual. */
+.cabecera {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: calc(36px + env(safe-area-inset-top)) 24px 42px;
+    background: linear-gradient(145deg, #f52b43, #cf102c);
+    color: #fff;
+    text-align: center;
+}
+
+.simbolo {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 14px;
+    border: 1px solid rgb(255 255 255 / 35%);
+    border-radius: 20px;
+    background: rgb(255 255 255 / 12%);
+}
+
+.simbolo svg {
+    width: 42px;
+    height: 42px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.marca {
+    font-size: clamp(40px, 11vw, 52px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -2px;
+}
+
+.marca span {
+    font-weight: 800;
+}
+
+.cabecera p {
+    margin: 12px 0 0;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* Panel blanco que ocupa el espacio restante de la pantalla. */
+.panel {
+    position: relative;
+    flex: 1;
+    margin-top: -12px;
+    padding: 32px 26px calc(24px + env(safe-area-inset-bottom));
+    border-radius: 36px 36px 0 0;
+    background: #fff;
+}
+
+.bienvenida {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+    color: #202633;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+}
+
+.bienvenida p {
+    margin: 9px 0 0;
+    color: #697180;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* Campos ovalados y controles táctiles. */
+.campo {
+    margin-bottom: 22px;
+}
+
+label {
+    display: block;
+    margin: 0 0 10px 4px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 54px;
+    padding: 15px 18px;
+    border: 1px solid #e0e3e8;
+    border-radius: 28px;
+    background: #fafbfc;
+    color: #202633;
+    font-size: 16px;
+}
+
+input::placeholder {
+    color: #747c89;
+}
+
+.entrada-clave {
+    display: flex;
+    align-items: center;
+    border: 1px solid #e0e3e8;
+    border-radius: 28px;
+    background: #fafbfc;
+}
+
+.entrada-clave input {
+    flex: 1;
+    border: 0;
+    background: transparent;
+}
+
+.ver-clave {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-right: 4px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #697180;
+    cursor: pointer;
+}
+
+.ver-clave svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Enlace para recuperar la contraseña, bajo el campo de contraseña. */
+.olvide-clave {
+    display: block;
+    width: fit-content;
+    margin: -12px 4px 14px auto;
+    padding: 8px 0;
+    color: #b9142c;
+    font-size: 14px;
+    font-weight: 700;
+    text-underline-offset: 4px;
+}
+
+.olvide-clave:focus-visible {
+    outline: 2px solid #c82135;
+    outline-offset: 3px;
+}
+
+/* Acción principal conservando el rojo de la referencia. */
+.boton-ingresar {
+    width: 100%;
+    min-height: 54px;
+    margin-top: 6px;
+    border: 0;
+    border-radius: 28px;
+    background: #d71934;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+/* Botones deshabilitados mientras el servidor responde. */
+button:disabled {
+    cursor: not-allowed;
+}
+
+/* Foco visible para navegación con teclado. */
+input:focus-visible,
+.ver-clave:focus-visible {
+    outline: 2px solid #c82135;
+    outline-offset: 3px;
+}
+
+/* Enlace entre las pantallas de acceso y registro. */
+.enlace-cuenta {
+    margin: 18px 0 0;
+    color: #697180;
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.enlace-cuenta a {
+    display: inline-block;
+    padding: 8px 4px;
+    color: #b9142c;
+    font-weight: 700;
+    text-underline-offset: 4px;
+}
+
+.enlace-cuenta a:focus-visible {
+    outline: 2px solid #c82135;
+    outline-offset: 3px;
+}
+
+/* Mensaje de error del inicio de sesión. */
+.error-login {
+    margin: 14px 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #fff0f2;
+    color: #a7192b;
+    font-size: 15px;
+    line-height: 1.5;
+}

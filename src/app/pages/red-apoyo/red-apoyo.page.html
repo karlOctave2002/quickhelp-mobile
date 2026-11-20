@@ -1,0 +1,102 @@
+<ion-content>
+    <main class="pantalla">
+        <header class="encabezado">
+            <p class="etiqueta">QUICK HELP</p>
+            <h1>Mi red de apoyo</h1>
+            <p class="descripcion">
+                Revisa quién quiere unirse y quién ya forma parte de tu red.
+            </p>
+        </header>
+
+        @if (!sesion()) {
+        <section class="tarjeta">
+            <h2>Inicia sesión para ver tu red</h2>
+            <a class="enlace" routerLink="/login">Iniciar sesión</a>
+        </section>
+        } @else if (sesion()?.rol !== 'ADULTO_MAYOR') {
+        <p class="aviso">Esta vista corresponde a la persona adulta.</p>
+        } @else {
+        <div role="status" aria-live="polite">
+            @if (avisoAccion()) {
+            <p class="aviso-accion">{{ avisoAccion() }}</p>
+            }
+        </div>
+
+        @if (cargando()) {
+        <p class="aviso" role="status">Cargando tu red de apoyo…</p>
+        } @else if (error()) {
+        <section class="tarjeta">
+            <p role="alert">{{ error() }}</p>
+            <button class="reintentar" type="button" (click)="cargar()">
+                Volver a intentar
+            </button>
+        </section>
+        } @else {
+        <!-- Las acciones de aceptar y rechazar aparecen solo en pendientes. -->
+        @if (pendientes().length > 0) {
+        <section class="tarjeta" aria-labelledby="titulo-pendientes">
+            <h2 id="titulo-pendientes">Solicitudes pendientes</h2>
+
+            <ul class="lista-red">
+                @for (solicitud of pendientes(); track solicitud.idSolicitud) {
+                <li>
+                    <app-fila-contacto [nombre]="solicitud.nombreAsistente" [pendiente]="true"
+                        [bloqueada]="procesando()" (aceptar)="resolver(solicitud, 'aprobar')"
+                        (rechazar)="resolver(solicitud, 'rechazar')" />
+                </li>
+                }
+            </ul>
+        </section>
+        }
+
+        <!-- Los integrantes ya vinculados muestran su estado en la misma fila. -->
+        @if (integrantes().length > 0) {
+        <section class="tarjeta" aria-labelledby="titulo-integrantes">
+            <h2 id="titulo-integrantes">Personas de mi red</h2>
+
+            <ul class="lista-red">
+                @for (persona of integrantes(); track persona.idRedApoyo) {
+                <li>
+                    <app-fila-contacto [nombre]="persona.nombreIntegrante" [activa]="persona.estado"
+                        [gestionable]="true" [bloqueada]="procesando()" (retirar)="pedirRetiro(persona)"
+                        (reactivar)="cambiarEstado(persona, 'reactivar')" />
+
+                    <!-- Confirmación antes de retirar a alguien de la red. -->
+                    @if (confirmandoRetiro()?.idRedApoyo === persona.idRedApoyo) {
+                    <div class="confirmar-retiro" role="alertdialog"
+                        [attr.aria-label]="'Confirmar retiro de ' + persona.nombreIntegrante">
+                        <p>
+                            ¿Retirar a <strong>{{ persona.nombreIntegrante }}</strong> de tu red?
+                            Dejará de recibir tus emergencias y no podrá ver tus alertas.
+                        </p>
+                        <div class="botones-confirmar">
+                            <button class="cancelar" type="button" [disabled]="procesando()"
+                                (click)="cancelarRetiro()">
+                                Cancelar
+                            </button>
+                            <button class="si-retirar" type="button" [disabled]="procesando()"
+                                (click)="cambiarEstado(persona, 'desactivar')">
+                                {{ procesando() ? 'Retirando…' : 'Sí, retirar' }}
+                            </button>
+                        </div>
+                    </div>
+                    }
+                </li>
+                }
+            </ul>
+        </section>
+        }
+
+        @if (pendientes().length === 0 && integrantes().length === 0) {
+        <section class="tarjeta">
+            <h2>Aún no hay contactos</h2>
+            <p>
+                Tampoco tienes solicitudes pendientes. Puedes compartir tu código
+                desde Mi perfil.
+            </p>
+        </section>
+        }
+        }
+        }
+    </main>
+</ion-content>

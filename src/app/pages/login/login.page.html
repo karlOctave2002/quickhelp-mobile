@@ -1,0 +1,75 @@
+<ion-content>
+    <main class="login">
+        <!-- Cabecera con la identidad de Quick Help. -->
+        <header class="cabecera">
+            <div class="simbolo" aria-hidden="true">
+                <svg viewBox="0 0 48 48">
+                    <path d="M5 25H14L20 12L28 36L34 25H43" />
+                </svg>
+            </div>
+            <div class="marca" aria-label="Quick Help">Quick<span>Help</span></div>
+            <p>Tu red de apoyo, contigo.</p>
+        </header>
+
+        <!-- Panel de acceso independiente de la navegación inferior. -->
+        <section class="panel" aria-labelledby="titulo-login">
+            <div class="bienvenida">
+                <h1 id="titulo-login">Bienvenido</h1>
+                <p>Inicia sesión para continuar</p>
+            </div>
+
+            <!-- Envía las credenciales mediante el servicio de autenticación. -->
+            <form #formulario (submit)="$event.preventDefault(); iniciarSesion(formulario)"
+                [attr.aria-busy]="cargando()">
+
+                <div class="campo">
+                    <label for="correo">Correo electrónico</label>
+                    <input id="correo" name="correo" type="email" autocomplete="username" inputmode="email"
+                        autocapitalize="none" spellcheck="false" placeholder="Tu correo electrónico"
+                        [readOnly]="cargando()" required />
+                </div>
+
+                <div class="campo">
+                    <label for="clave">Contraseña</label>
+                    <div class="entrada-clave">
+                        <input id="clave" name="clave" [type]="mostrarClave() ? 'text' : 'password'"
+                            autocomplete="current-password" placeholder="Tu contraseña" [readOnly]="cargando()"
+                            required />
+
+                        <!-- Permite mostrar u ocultar la contraseña. -->
+                        <button class="ver-clave" type="button" (click)="alternarClave()"
+                            [attr.aria-label]="mostrarClave() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                            [attr.aria-pressed]="mostrarClave()" aria-controls="clave">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M2 12S5.5 5 12 5S22 12 22 12S18.5 19 12 19S2 12 2 12Z" />
+                                <circle cx="12" cy="12" r="3" />
+                                @if (!mostrarClave()) {
+                                <path d="M3 3L21 21" />
+                                }
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <a class="olvide-clave" routerLink="/recuperar-clave">¿Olvidaste tu contraseña?</a>
+
+                <!-- Evita nuevos envíos mientras el servidor responde. -->
+                <button class="boton-ingresar" type="submit" [disabled]="cargando()">
+                    {{ cargando() ? 'Ingresando…' : 'Iniciar sesión' }}
+                </button>
+
+                <!-- Informa los errores de conexión o credenciales. -->
+                @if (error()) {
+                <p class="error-login" role="alert">
+                    {{ error() }}
+                </p>
+                }
+
+                <p class="enlace-cuenta">
+                    ¿No tienes una cuenta?
+                    <a routerLink="/registro">Regístrate</a>
+                </p>
+            </form>
+        </section>
+    </main>
+</ion-content>

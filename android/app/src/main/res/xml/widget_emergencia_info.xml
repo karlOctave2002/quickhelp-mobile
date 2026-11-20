@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/widget_emergencia_descripcion"
+    android:initialLayout="@layout/widget_emergencia"
+    android:minHeight="40dp"
+    android:minResizeWidth="180dp"
+    android:minWidth="250dp"
+    android:previewLayout="@layout/widget_emergencia"
+    android:resizeMode="horizontal"
+    android:targetCellHeight="1"
+    android:targetCellWidth="4"
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen" />

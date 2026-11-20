@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular';
+import { NotificacionesPushService } from './core/services/notificaciones-push.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular';
   imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
-  constructor() {}
+  constructor() {
+    inject(NotificacionesPushService).iniciar(); // Observa el inicio y cierre de sesión.
+  }
 }

@@ -1,0 +1,131 @@
+<ion-content>
+    <main class="login">
+        <header class="cabecera">
+            <div class="marca" aria-label="Quick Help">Quick<span>Help</span></div>
+            <p>Tu red de apoyo, contigo.</p>
+        </header>
+
+        <section class="panel" aria-labelledby="titulo-registro">
+            <div class="bienvenida">
+                <h1 id="titulo-registro">
+                    {{ registrado() ? 'Cuenta creada' : 'Crea tu cuenta' }}
+                </h1>
+                <p>
+                    {{ registrado() ? 'Ya puedes iniciar sesión' : 'Completa tus datos para registrarte' }}
+                </p>
+            </div>
+
+            @if (!registrado()) {
+            <form #formulario novalidate (submit)="$event.preventDefault(); registrarCuenta(formulario)"
+                (input)="limpiarMensajes()" [attr.aria-busy]="cargando()">
+
+                <fieldset class="tipo-cuenta" [disabled]="cargando()">
+                    <legend>¿Cómo quieres registrarte?</legend>
+                    <div class="opciones-cuenta">
+                        <label class="opcion-cuenta" [class.seleccionada]="tipoCuenta() === 'persona_adulta'">
+                            <input type="radio" name="tipoCuenta" value="persona_adulta"
+                                [checked]="tipoCuenta() === 'persona_adulta'"
+                                (change)="seleccionarTipo('persona_adulta')" />
+                            <span>Persona adulta</span>
+                        </label>
+
+                        <label class="opcion-cuenta" [class.seleccionada]="tipoCuenta() === 'red_apoyo'">
+                            <input type="radio" name="tipoCuenta" value="red_apoyo"
+                                [checked]="tipoCuenta() === 'red_apoyo'" (change)="seleccionarTipo('red_apoyo')" />
+                            <span>Red de apoyo</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <!-- El código del adulto se pide únicamente a la persona de apoyo. -->
+                @if (tipoCuenta() === 'red_apoyo') {
+                <div class="campo campo-vinculacion">
+                    <label for="codigo-vinculacion">Código de vinculación</label>
+                    <input id="codigo-vinculacion" name="codigoVinculacion" type="text" maxlength="20"
+                        autocomplete="off" autocapitalize="characters" spellcheck="false"
+                        placeholder="Ingresa el código QH-…" aria-describedby="ayuda-vinculacion"
+                        [readOnly]="cargando()" required />
+                    <p id="ayuda-vinculacion" class="ayuda-vinculacion">
+                        Pídele a la persona adulta su código de vinculación.
+                        Al registrarte, recibirá una solicitud para aprobar el vínculo.
+                    </p>
+                </div>
+                }
+
+                <div class="campo">
+                    <label for="nombre-registro">Nombre completo</label>
+                    <input id="nombre-registro" name="nombre" type="text" autocomplete="name" maxlength="150"
+                        placeholder="Tu nombre completo" [readOnly]="cargando()" required />
+                </div>
+
+                <!-- Cada persona registra su propio teléfono, independientemente del rol. -->
+                <div class="campo">
+                    <label for="telefono-registro">Teléfono de contacto (obligatorio)</label>
+                    <input id="telefono-registro" name="telefono" type="tel" inputmode="tel" autocomplete="tel"
+                        maxlength="30" placeholder="Ej.: +56 9 1234 5678" [readOnly]="cargando()" required />
+                </div>
+
+                <div class="campo">
+                    <label for="correo-registro">Correo electrónico</label>
+                    <input id="correo-registro" name="correo" type="email" autocomplete="username" inputmode="email"
+                        autocapitalize="none" spellcheck="false" maxlength="150" placeholder="Tu correo electrónico"
+                        [readOnly]="cargando()" required />
+                </div>
+
+                <div class="campo">
+                    <label for="clave-registro">Contraseña</label>
+                    <div class="entrada-clave">
+                        <input id="clave-registro" name="clave" [type]="mostrarClave() ? 'text' : 'password'"
+                            autocomplete="new-password" minlength="8" placeholder="Mínimo 8 caracteres"
+                            [readOnly]="cargando()" required />
+
+                        <button class="ver-clave" type="button" (click)="alternarClave()"
+                            [attr.aria-label]="mostrarClave() ? 'Ocultar contraseñas' : 'Mostrar contraseñas'"
+                            [attr.aria-pressed]="mostrarClave()" aria-controls="clave-registro confirmar-clave">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M2 12S5.5 5 12 5S22 12 22 12S18.5 19 12 19S2 12 2 12Z" />
+                                <circle cx="12" cy="12" r="3" />
+                                @if (!mostrarClave()) {
+                                <path d="M3 3L21 21" />
+                                }
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label for="confirmar-clave">Confirmar contraseña</label>
+                    <input id="confirmar-clave" name="confirmacion" [type]="mostrarClave() ? 'text' : 'password'"
+                        autocomplete="new-password" placeholder="Repite tu contraseña" [readOnly]="cargando()"
+                        required />
+                </div>
+
+                <button class="boton-ingresar" type="submit" [disabled]="cargando()">
+                    {{ cargando() ? 'Creando cuenta…' : 'Crear cuenta' }}
+                </button>
+
+                <div aria-live="polite" aria-atomic="true">
+                    @if (error()) {
+                    <p class="mensaje-registro mensaje-error">{{ error() }}</p>
+                    }
+                </div>
+            </form>
+            }
+
+            <div aria-live="polite" aria-atomic="true">
+                @if (resultado()) {
+                <p class="mensaje-registro mensaje-correcto">{{ resultado() }}</p>
+                }
+            </div>
+
+            @if (!cargando()) {
+            <p class="enlace-cuenta">
+                @if (!registrado()) {
+                ¿Ya tienes una cuenta?
+                }
+                <a routerLink="/login">Inicia sesión</a>
+            </p>
+            }
+        </section>
+    </main>
+</ion-content>
